@@ -164,31 +164,56 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     return MACRO_NONE;
 };
 
+
+
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-
-};
-
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void) {
-
-    uint8_t layer = biton32(layer_state);
-
     ergodox_board_led_off();
     ergodox_right_led_1_off();
     ergodox_right_led_2_off();
     ergodox_right_led_3_off();
-    switch (layer) {
-      // TODO: Make this relevant to the ErgoDox EZ.
-        case 1:
-            ergodox_right_led_1_on();
-            break;
-        case 2:
-            ergodox_right_led_2_on();
-            break;
-        default:
-            // none
-            break;
-    }
+}
 
+// Runs constantly in the background, in a loop.
+void led_set_user(uint8_t usb_led) {
+    if (usb_led & (1<<USB_LED_NUM_LOCK)) {
+        ergodox_right_led_1_on();
+    } else {
+        ergodox_right_led_1_off();
+    }
+    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
+        ergodox_right_led_2_on();
+    } else {
+        ergodox_right_led_2_off();
+    }
+    if (usb_led & (1<<USB_LED_SCROLL_LOCK)) {
+        ergodox_right_led_3_on();
+    } else {
+        ergodox_right_led_3_off();
+    }
 };
+
+
+// Runs constantly in the background, in a loop.
+// void matrix_scan_user(void) {
+
+//     uint8_t layer = biton32(layer_state);
+
+//     ergodox_board_led_off();
+//     ergodox_right_led_1_off();
+//     ergodox_right_led_2_off();
+//     ergodox_right_led_3_off();
+//     switch (layer) {
+//       // TODO: Make this relevant to the ErgoDox EZ.
+//         case 1:
+//             ergodox_right_led_1_on();
+//             break;
+//         case 2:
+//             ergodox_right_led_2_on();
+//             break;
+//         default:
+//             // none
+//             break;
+//     }
+
+// };
